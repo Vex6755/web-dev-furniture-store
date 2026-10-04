@@ -79,6 +79,11 @@ body {
   flex: 1;
   padding: 40px;
 }
+/* fallback for the main content visibility */
+.main-content {
+    background-color: #ffffff; /* Ensure background isn't transparent */
+    min-height: 100vh;
+}
 
 .mobile-header {
   display: none;
