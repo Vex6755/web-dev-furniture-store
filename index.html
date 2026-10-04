@@ -5,362 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WEB DEVS - Products</title>
     <style>
-        /* --- UNIVERSAL STYLES --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
+        /* --- CORE VISUAL LAYOUT STYLES --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background-color: #ffffff; color: #000000; }
+        .container { display: flex; min-height: 100vh; }
+        
+        /* DESKTOP SIDEBAR NAVIGATION */
+        .sidebar { width: 280px; border-right: 1px solid #000; padding: 40px 20px; position: fixed; height: 100vh; left: 0; top: 0; z-index: 1000; background: #fff; display: flex; flex-direction: column; }
+        .sidebar-mobile-header { display: none; }
+        .nav-menu { display: flex; flex-direction: column; margin-top: 40px; }
+        .nav-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; color: #000; text-decoration: none; font-weight: 500; border-bottom: 1px solid #000; }
+        .nav-item.active { font-weight: 800; }
+        .sidebar-footer { margin-top: auto; padding-top: 20px; }
+        .sidebar-footer a { color: #000; text-decoration: none; }
+        .social-icons { margin-top: 10px; font-size: 1.2rem; }
 
-        body {
-            background-color: #ffffff;
-            color: #000000;
-        }
+        /* CONTENT AREAL DISPLAY CONTAINER */
+        .main-content { margin-left: 280px; flex: 1; padding: 40px; }
+        .mobile-header { display: none; }
+        h1 { font-size: 1.5rem; margin-bottom: 8px; }
+        .subtitle { font-size: 0.95rem; margin-bottom: 30px; }
+        .categories-box { border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 15px 0; margin-bottom: 40px; }
+        .categories-box h3 { font-size: 0.9rem; margin-bottom: 10px; }
+        .categories-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 0.85rem; }
+        .categories-grid label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        h2 { font-size: 1.2rem; margin-bottom: 20px; }
+        
+        /* RESPONSIVE DISPLAY PRODUCT IMAGE GRID */
+        .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        .product-card { display: flex; flex-direction: column; cursor: pointer; text-decoration: none; color: #000; }
+        .image-wrapper { width: 100%; aspect-ratio: 4/3; background-color: #f0f0f0; overflow: hidden; position: relative; border: 1px solid #ddd; border-radius: 4px; }
+        .image-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        
+        /* INTERACTIVE VIDEO ACTION OVERLAYS */
+        .video-wrapper .play-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: flex; justify-content: center; align-items: center; color: white; font-weight: bold; font-size: 1.1rem; }
+        .product-info { margin-top: 12px; font-size: 0.85rem; line-height: 1.4; }
+        .product-title-bold { font-weight: bold; }
 
-        /* --- RESPONSIVE CONTAINER LAYOUT --- */
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
+        /* CONTACT FORM GRID TEMPLATE */
+        .contact-section { margin-top: 60px; padding-top: 40px; border-top: 1px solid #000; max-width: 600px; }
+        .contact-form { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
+        .contact-form input, .contact-form textarea { width: 100%; padding: 10px; border: 1px solid #000; outline: none; }
+        .contact-form button { background: #000; color: #fff; padding: 12px; border: none; cursor: pointer; font-weight: bold; }
+        .interactive-footer { padding: 20px 0; border-top: 1px solid #eee; font-size: 0.9rem; }
+        .contact-link { color: #000; text-decoration: underline; font-weight: 600; }
 
-        /* --- SIDEBAR / DESKTOP NAVIGATION --- */
-        .sidebar {
-            width: 280px;
-            border-right: 1px solid #000;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: fixed;
-            height: 100vh;
-            left: 0;
-            top: 0;
-            z-index: 1000;
-            background: #fff;
-        }
+        /* DYNAMIC POP-UP RICH-MEDIA MODALS */
+        .video-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-content { position: relative; width: 90%; max-width: 800px; background: #000; }
+        .modal-close { position: absolute; top: -40px; right: 0; font-size: 2rem; color: #fff; background: none; border: none; cursor: pointer; }
+        .video-responsive { position: relative; padding-bottom: 56.25%; height: 0; }
+        .video-responsive video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        .sidebar-mobile-header {
-            display: none;
-        }
-
-        .nav-menu {
-            display: flex;
-            flex-direction: column;
-            margin-top: 40px;
-        }
-
-        .nav-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            color: #000;
-            text-decoration: none;
-            font-weight: 500;
-            border-bottom: 1px solid #000;
-        }
-
-        .nav-item.active {
-            font-weight: 800;
-        }
-
-        .sidebar-footer {
-            margin-top: auto;
-            padding-top: 20px;
-        }
-
-        .sidebar-footer a {
-            color: #000;
-            text-decoration: none;
-        }
-
-        .social-icons {
-            margin-top: 10px;
-            font-size: 1.2rem;
-        }
-
-        /* --- MAIN CONTENT WINDOW --- */
-        .main-content {
-            margin-left: 280px;
-            flex: 1;
-            padding: 40px;
-        }
-
-        .mobile-header {
-            display: none;
-        }
-
-        /* --- PRODUCT DISPLAY CONTENT --- */
-        h1 {
-            font-size: 1.5rem;
-            margin-bottom: 8px;
-        }
-
-        .subtitle {
-            font-size: 0.95rem;
-            margin-bottom: 30px;
-        }
-
-        .categories-box {
-            border-top: 1px solid #000;
-            border-bottom: 1px solid #000;
-            padding: 15px 0;
-            margin-bottom: 40px;
-        }
-
-        .categories-box h3 {
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
-
-        .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            font-size: 0.85rem;
-        }
-
-        .categories-grid label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        h2 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-        }
-
-        .product-card {
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .image-wrapper {
-            width: 100%;
-            aspect-ratio: 4/3;
-            background-color: #f5f5f5;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* --- VIDEO OVERLAY ELEMENT --- */
-        .video-wrapper .play-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: background 0.3s ease;
-        }
-
-        .video-wrapper:hover .play-overlay {
-            background: rgba(0, 0, 0, 0.6);
-        }
-
-        .product-info {
-            margin-top: 12px;
-            font-size: 0.85rem;
-            line-height: 1.4;
-        }
-
-        .product-title-bold {
-            font-weight: bold;
-        }
-
-        /* --- FORM & CONTACT STYLES --- */
-        .contact-section {
-            margin-top: 60px;
-            padding-top: 40px;
-            border-top: 1px solid #000;
-            max-width: 600px;
-        }
-
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .contact-form input, .contact-form textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #000;
-            outline: none;
-        }
-
-        .contact-form button {
-            background: #000;
-            color: #fff;
-            padding: 12px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .contact-form button:hover {
-            background: #333;
-        }
-
-        .interactive-footer {
-            padding: 20px 0;
-            border-top: 1px solid #eee;
-            font-size: 0.9rem;
-        }
-
-        .contact-link {
-            color: #000;
-            text-decoration: underline;
-            font-weight: 600;
-        }
-
-        /* --- INTERACTIVE MODAL INTERFACE --- */
-        .video-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            position: relative;
-            width: 90%;
-            max-width: 800px;
-            background: #000;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            font-size: 2rem;
-            color: #fff;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .video-responsive {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-        }
-
-        .video-responsive video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* --- MOBILE SPECIFIC VIEWPORTS (< 768px) --- */
+        /* MOBILE BREAKPOINT LOGIC (< 768px) */
         @media (max-width: 767px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .mobile-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 15px 20px;
-                border-bottom: 1px solid #000;
-                position: sticky;
-                top: 0;
-                background: #fff;
-                z-index: 900;
-            }
-
-            .menu-toggle {
-                font-size: 1.5rem;
-                background: none;
-                border: none;
-                cursor: pointer;
-            }
-
-            .logo {
-                font-weight: 800;
-                letter-spacing: 1px;
-            }
-
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100vh;
-                transition: left 0.3s ease;
-                padding: 20px;
-                border-right: none;
-            }
-
-            .sidebar.open {
-                left: 0;
-            }
-
-            .sidebar-mobile-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding-bottom: 15px;
-                border-bottom: 1px solid #000;
-            }
-
-            .menu-close {
-                font-size: 1.5rem;
-                background: none;
-                border: none;
-                cursor: pointer;
-            }
-
-            .main-content {
-                margin-left: 0;
-                padding: 20px;
-            }
-
-            .categories-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
+            .sidebar { position: fixed; top: 0; left: -100%; width: 100%; height: 100vh; transition: left 0.3s ease; padding: 20px; border-right: none; }
+            .sidebar.open { left: 0; }
+            .sidebar-mobile-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid #000; }
+            .menu-close { font-size: 1.5rem; background: none; border: none; cursor: pointer; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .mobile-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #000; position: sticky; top: 0; background: #fff; z-index: 900; }
+            .menu-toggle { font-size: 1.5rem; background: none; border: none; cursor: pointer; }
+            .logo { font-weight: 800; letter-spacing: 1px; }
+            .categories-grid { grid-template-columns: repeat(2, 1fr); }
+            .products-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- MOBILE HEADER -->
+    <!-- MOBILE TOP BAR HEADER VIEWPORTPORT -->
     <header class="mobile-header">
         <button class="menu-toggle" id="menuOpen" aria-label="Open Menu">☰</button>
         <div class="logo">WEB DEVS</div>
@@ -368,7 +82,7 @@
     </header>
 
     <div class="container">
-        <!-- SIDEBAR / FULLSCREEN MOBILE MENU -->
+        <!-- FIXED NAVIGATION SIDEBAR / RESPONSIVE FULLSCREEN OVERLAY DRAWER -->
         <aside class="sidebar" id="sidebarMenu">
             <div class="sidebar-mobile-header">
                 <button class="menu-close" id="menuClose" aria-label="Close Menu">✕</button>
@@ -386,5 +100,67 @@
                 <a href="#impressum" class="nav-item">Legal Notice</a>
             </nav>
             <div class="sidebar-footer">
+                <a href="#newsletter">Newsletter</a>
+                <div class="social-icons">
+                    <a href="https://instagram.com" target="_blank" aria-label="Instagram">📸</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN LAYOUT MATRIX CONTENT AREA -->
+        <main class="main-content">
+            <section id="products">
+                <h1>Products</h1>
+                <p class="subtitle">The following products were presented during the previous exhibitions.</p>
+
+                <!-- INTERACTIVE CATEGORIES CHECKBOX ARRAY -->
+                <div class="categories-box">
+                    <h3>Categories</h3>
+                    <div class="categories-grid">
+                        <label><input type="checkbox" checked> Furniture</label>
+                        <label><input type="checkbox"> Kitchen</label>
+                        <label><input type="checkbox"> Accessories</label>
+                        <label><input type="checkbox"> Lighting</label>
+                        <label><input type="checkbox"> Household</label>
+                        <label><input type="checkbox"> Other</label>
+                    </div>
+                </div>
+
+                <h2>Furniture</h2>
+
+                <!-- FLUID RESIZABLE COLUMN GRID ROWS -->
+                <div class="products-grid">
+                    <!-- Item 1: Clickable Pop-Up Media Card Thumbnail -->
+                    <div class="product-card video-card" id="videoTrigger">
+                        <div class="image-wrapper video-wrapper">
+                            <img src="https://picsum.photos" alt="Storage Furniture Showcase Video">
+                            <div class="play-overlay">▶ Play Video</div>
+                        </div>
+                        <div class="product-info">
+                            <span class="product-number">16/19</span>
+                            <p class="product-name"><strong>Storage Furniture</strong></p>
+                            <p class="product-author">Robert Rüf</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2: Standard Core Portfolio Product Card -->
+                    <div class="product-card">
+                        <div class="image-wrapper">
+                            <img src="https://picsum.photos" alt="Alba Chair">
+                        </div>
+                        <div class="product-info">
+                            <p class="product-title-bold"><strong>Alba</strong></p>
+                            <p class="product-name">Chair</p>
+                            <p class="product-author">Alexander Gufler</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONTACT FORM AREA & DEEP LINK ACTION ANCHORS -->
+            <section id="contact-section" class="contact-section">
+                <h2>Contact Us</h2>
+                <form class="contact-form" onsubmit="event.preventDefault(); alert('Message sent successfully!');">
+
 
 
